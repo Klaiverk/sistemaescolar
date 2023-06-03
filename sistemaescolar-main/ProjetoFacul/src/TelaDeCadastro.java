@@ -10,16 +10,17 @@ import java.awt.Dialog.ModalExclusionType;
 import java.awt.Window.Type;
 import java.awt.Component;
 import javax.swing.Box;
+import javax.swing.JCheckBox;
 
-public class Janela {
+public class TelaDeCadastro {
 
 	private JFrame frame;
 	private JTextField textNome;
 	private JTextField textCPF;
 	private JTextField textCelular;
-	private JLabel lblEmail_1;
-	private JTextField textField;
-	private JTextField textField_1;
+	private JLabel lblEmail;
+	private JTextField textEmail;
+	private JTextField textEndereco;
 
 	/**
 	 * Launch the application.
@@ -44,7 +45,7 @@ public class Janela {
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
-					Janela window = new Janela();
+					TelaDeCadastro window = new TelaDeCadastro();
 					window.frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -56,7 +57,7 @@ public class Janela {
 	/**
 	 * Create the application.
 	 */
-	public Janela() {
+	public TelaDeCadastro() {
 		initialize();
 	}
 
@@ -69,7 +70,7 @@ public class Janela {
 		frame.setForeground(new Color(0, 0, 0));
 		frame.getContentPane().setForeground(new Color(0, 0, 0));
 		frame.getContentPane().setBackground(new Color(245, 245, 245));
-		frame.setBounds(100, 100, 450, 344);
+		frame.setBounds(100, 100, 450, 388);
 		frame.getContentPane().setLayout(null);
 		
 		textNome = new JTextField();
@@ -107,24 +108,32 @@ public class Janela {
 		lblCadastro.setBounds(177, 11, 128, 32);
 		frame.getContentPane().add(lblCadastro);
 		
-		lblEmail_1 = new JLabel("E-mail");
-		lblEmail_1.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
-		lblEmail_1.setBounds(22, 149, 63, 13);
-		frame.getContentPane().add(lblEmail_1);
+		lblEmail = new JLabel("E-mail");
+		lblEmail.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+		lblEmail.setBounds(22, 149, 63, 13);
+		frame.getContentPane().add(lblEmail);
 		
-		textField = new JTextField();
-		textField.setColumns(10);
-		textField.setBounds(22, 163, 96, 19);
-		frame.getContentPane().add(textField);
+		textEmail = new JTextField();
+		textEmail.setColumns(10);
+		textEmail.setBounds(22, 163, 96, 19);
+		frame.getContentPane().add(textEmail);
 		
 		JLabel lblCelular = new JLabel("Celular");
 		lblCelular.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
 		lblCelular.setBounds(22, 236, 96, 13);
 		frame.getContentPane().add(lblCelular);
 		
-		textField_1 = new JTextField();
-		textField_1.setColumns(10);
-		textField_1.setBounds(22, 206, 96, 19);
-		frame.getContentPane().add(textField_1);
+		textEndereco = new JTextField();
+		textEndereco.setColumns(10);
+		textEndereco.setBounds(22, 206, 96, 19);
+		frame.getContentPane().add(textEndereco);
+		
+		JCheckBox chckbxProfessor = new JCheckBox("Professor");
+		chckbxProfessor.setBounds(21, 275, 97, 23);
+		frame.getContentPane().add(chckbxProfessor);
+		
+		JCheckBox chckbxAluno = new JCheckBox("Aluno");
+		chckbxAluno.setBounds(21, 301, 97, 23);
+		frame.getContentPane().add(chckbxAluno);
 	}
 }
