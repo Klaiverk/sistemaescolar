@@ -7,13 +7,15 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import javax.swing.JTextField;
 import javax.swing.JTable;
+import javax.swing.JLabel;
+import java.awt.Font;
 
 public class TelaCurso {
 
     private JFrame frame;
-    private JTextField boxNome;
-    private JTextField boxCurso;
-    private JTextField boxRA;
+    private JTextField boxAluno;
+    private JTextField boxSala;
+    private JTextField boxTurma;
     private JTextField boxProfessor;
     private JTable table;
 
@@ -40,28 +42,24 @@ public class TelaCurso {
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
-        boxNome = new JTextField();
-        boxNome.setText("Nome");
-        boxNome.setBounds(10, 50, 86, 20);
-        frame.getContentPane().add(boxNome);
-        boxNome.setColumns(10);
+        boxAluno = new JTextField();
+        boxAluno.setBounds(10, 35, 86, 20);
+        frame.getContentPane().add(boxAluno);
+        boxAluno.setColumns(10);
 
-        boxCurso = new JTextField();
-        boxCurso.setText("Curso");
-        boxCurso.setColumns(10);
-        boxCurso.setBounds(239, 50, 86, 20);
-        frame.getContentPane().add(boxCurso);
+        boxSala = new JTextField();
+        boxSala.setColumns(10);
+        boxSala.setBounds(218, 35, 86, 20);
+        frame.getContentPane().add(boxSala);
 
-        boxRA = new JTextField();
-        boxRA.setText("RA");
-        boxRA.setColumns(10);
-        boxRA.setBounds(470, 50, 86, 20);
-        frame.getContentPane().add(boxRA);
+        boxTurma = new JTextField();
+        boxTurma.setColumns(10);
+        boxTurma.setBounds(445, 35, 86, 20);
+        frame.getContentPane().add(boxTurma);
 
         boxProfessor = new JTextField();
-        boxProfessor.setText("Professor");
         boxProfessor.setColumns(10);
-        boxProfessor.setBounds(722, 50, 86, 20);
+        boxProfessor.setBounds(673, 35, 86, 20);
         frame.getContentPane().add(boxProfessor);
 
         Object[] columnNames = {"Nome", "Curso", "RA", "Professor"};
@@ -72,19 +70,39 @@ public class TelaCurso {
             }
         };
 
-        table = new JTable(model);
-        table.setBounds(10, 80, 798, 150);
-        frame.getContentPane().add(table);        
+        JLabel rodape_Professor = new JLabel("Professor");
+        rodape_Professor.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 11));
+        rodape_Professor.setBounds(673, 4, 86, 20);
+        frame.getContentPane().add(rodape_Professor);
 
         JButton botaoRegistro = new JButton("Registrar");
         botaoRegistro.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-                Object[] row = {boxNome.getText(), boxCurso.getText(), boxRA.getText(), boxProfessor.getText()};
+                Object[] row = {boxAluno.getText(), boxSala.getText(), boxTurma.getText(), boxProfessor.getText()};
                 model.addRow(row);
                 JOptionPane.showMessageDialog(null, "Dados registrados com sucesso!");
             }
         });
         botaoRegistro.setBounds(366, 238, 89, 23);
         frame.getContentPane().add(botaoRegistro);
+        
+        JLabel rodape_Aluno = new JLabel("Aluno");
+        rodape_Aluno.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 11));
+        rodape_Aluno.setBounds(10, 11, 86, 20);
+        frame.getContentPane().add(rodape_Aluno);
+        
+        JLabel rodape_sala = new JLabel("Sala");
+        rodape_sala.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 11));
+        rodape_sala.setBounds(218, 4, 86, 20);
+        frame.getContentPane().add(rodape_sala);
+        
+        JLabel rodape_Turma = new JLabel("Turma");
+        rodape_Turma.setFont(new Font("Segoe UI Emoji", Font.PLAIN, 11));
+        rodape_Turma.setBounds(445, 4, 86, 20);
+        frame.getContentPane().add(rodape_Turma);
+        
+                table = new JTable(model);
+                table.setBounds(10, 81, 798, 150);
+                frame.getContentPane().add(table);
     }
 }

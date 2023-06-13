@@ -11,6 +11,7 @@ import java.awt.Window.Type;
 import java.awt.Component;
 import javax.swing.Box;
 import javax.swing.JCheckBox;
+import javax.swing.JButton;
 
 public class TelaDeCadastro {
 
@@ -21,7 +22,6 @@ public class TelaDeCadastro {
 	private JLabel lblEmail;
 	private JTextField textEmail;
 	private JTextField textEndereco;
-	private JTextField textField;
 
 	/**
 	 * Launch the application.
@@ -137,9 +137,8 @@ public class TelaDeCadastro {
 		chckbxAluno.setBounds(21, 301, 97, 23);
 		frame.getContentPane().add(chckbxAluno);
 		
-		textField = new JTextField();
-		textField.setBounds(313, 75, 86, 20);
-		frame.getContentPane().add(textField);
-		textField.setColumns(10);
+		JButton btnCadastrar = new JButton("Cadastrar");
+		btnCadastrar.setBounds(267, 301, 89, 23);
+		frame.getContentPane().add(btnCadastrar);
 	}
 }
