@@ -1,6 +1,12 @@
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 import javax.swing.AbstractButton;
 import javax.swing.JButton;
@@ -23,9 +29,10 @@ public class TelaCadastro {
     private JCheckBox checkBoxAluno;
     private JCheckBox checkBoxProfessor;
 
-    /**
-     * Launch the application.
-     */
+    private static final String DB_URL = "jdbc:mysql://localhost:3306/bancosdedados";
+    private static final String DB_USERNAME = "root";
+    private static final String DB_PASSWORD = "1204";
+
     public static void main(String[] args) {
         EventQueue.invokeLater(new Runnable() {
             public void run() {
@@ -39,16 +46,10 @@ public class TelaCadastro {
         });
     }
 
-    /**
-     * Create the application.
-     */
     public TelaCadastro() {
         initialize();
     }
 
-    /**
-     * Initialize the contents of the frame.
-     */
     private void initialize() {
         frame = new JFrame();
         frame.getContentPane().setBackground(new Color(245, 245, 245));
@@ -126,42 +127,79 @@ public class TelaCadastro {
 
         frame.setVisible(true);
     }
-    
+
     private void cadastrar() {
         String nome = textNome.getText();
         String cpf = textCPF.getText();
         String celular = textCelular.getText();
         String email = textEmail.getText();
         String endereco = textEndereco.getText();
-        
+
         if (nome.isEmpty() || cpf.isEmpty() || celular.isEmpty() || email.isEmpty() || endereco.isEmpty()) {
             JOptionPane.showMessageDialog(frame, "Preencha todos os campos obrigatórios");
             return;
         }
-        
+
         if (!checkBoxAluno.isSelected() && !checkBoxProfessor.isSelected()) {
             JOptionPane.showMessageDialog(frame, "Selecione ao menos um tipo: Aluno ou Professor");
             return;
         }
-        
+
         if (checkBoxAluno.isSelected() && checkBoxProfessor.isSelected()) {
             JOptionPane.showMessageDialog(frame, "Selecione apenas um tipo: Aluno ou Professor");
             return;
         }
-        
-        if (checkBoxAluno.isSelected()) {
-            Aluno aluno = new Aluno(nome, cpf, celular, email, endereco, 0);
-            // Lógica para salvar o aluno
-            JOptionPane.showMessageDialog(frame, "Cadastro de Aluno realizado com sucesso!");
-        } else if (checkBoxProfessor.isSelected()) {
-            Professor professor = new Professor(nome, cpf, celular, email, endereco, endereco);
-            // Lógica para salvar o professor
-            JOptionPane.showMessageDialog(frame, "Cadastro de Professor realizado com sucesso!");
+
+        try {
+            Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+
+            if (checkBoxAluno.isSelected()) {
+                String insertAlunoQuery = "INSERT INTO alunos (nome, cpf, celular, email, endereco, matricula) VALUES (?, ?, ?, ?, ?, ?)";
+                PreparedStatement insertAlunoStmt = connection.prepareStatement(insertAlunoQuery);
+                int matricula = generateMatricula(); // Função para gerar uma matrícula única
+                insertAlunoStmt.setString(1, nome);
+                insertAlunoStmt.setString(2, cpf);
+                insertAlunoStmt.setString(3, celular);
+                insertAlunoStmt.setString(4, email);
+                insertAlunoStmt.setString(5, endereco);
+                insertAlunoStmt.setInt(6, matricula);
+                insertAlunoStmt.executeUpdate();
+                JOptionPane.showMessageDialog(frame, "Cadastro de Aluno realizado com sucesso! Matrícula: " + matricula);
+            } else if (checkBoxProfessor.isSelected()) {
+                String insertProfessorQuery = "INSERT INTO professores (nome, cpf, celular, email, endereco, codigo_funcionario) VALUES (?, ?, ?, ?, ?, ?)";
+                PreparedStatement insertProfessorStmt = connection.prepareStatement(insertProfessorQuery);
+                String codigoFuncionario = generateCodigoFuncionario(); // Função para gerar um código único para o professor
+                insertProfessorStmt.setString(1, nome);
+                insertProfessorStmt.setString(2, cpf);
+                insertProfessorStmt.setString(3, celular);
+                insertProfessorStmt.setString(4, email);
+                insertProfessorStmt.setString(5, endereco);
+                insertProfessorStmt.setString(6, codigoFuncionario);
+                insertProfessorStmt.executeUpdate();
+                JOptionPane.showMessageDialog(frame, "Cadastro de Professor realizado com sucesso! Código do Funcionário: " + codigoFuncionario);
+            }
+
+            connection.close();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+            JOptionPane.showMessageDialog(frame, "Ocorreu um erro ao conectar ou executar a consulta: " + ex.getMessage());
         }
     }
 
-	public void setVisible(boolean b) {
-		// TODO Auto-generated method stub
-		
-	}
+    private int generateMatricula() {
+        // Implemente a lógica para gerar uma matrícula única aqui
+        // Pode ser um número sequencial, um número aleatório, ou qualquer outra lógica desejada
+        // Neste exemplo, estou retornando um número aleatório entre 1000 e 9999
+        Random random = new Random();
+        return random.nextInt(9000) + 1000;
+    }
+
+    private String generateCodigoFuncionario() {
+        // Implemente a lógica para gerar um código único para o professor aqui
+        // Pode ser um número sequencial, um código baseado no nome, ou qualquer outra lógica desejada
+        // Neste exemplo, estou retornando um código baseado no nome e na data atual
+        String nome = textNome.getText().replaceAll("\\s", "").toLowerCase();
+        String dataAtual = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyyMMdd"));
+        return nome + dataAtual;
+    }
 }

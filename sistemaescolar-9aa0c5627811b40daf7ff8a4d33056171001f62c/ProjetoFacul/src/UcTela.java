@@ -72,12 +72,12 @@ public class UcTela {
         table.setRowHeight(25);
         table.setFont(new Font("Arial", Font.PLAIN, 11));
 
-        // Alinha o conteúdo das células no centro
+        
         DefaultTableCellRenderer centerRenderer = new DefaultTableCellRenderer();
         centerRenderer.setHorizontalAlignment(DefaultTableCellRenderer.CENTER);
         table.setDefaultRenderer(Object.class, centerRenderer);
 
-        // Cabeçalho da tabela com estilo personalizado
+        
         JTableHeader header = table.getTableHeader();
         header.setBackground(Color.DARK_GRAY);
         header.setForeground(Color.BLACK);
