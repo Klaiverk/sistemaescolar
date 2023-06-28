@@ -1,13 +1,13 @@
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.Font;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.Random;
 
 import javax.swing.JButton;
@@ -22,17 +22,20 @@ public class TelaCadastro {
     private JFrame frame;
     private JTextField textNome;
     private JTextField textCPF;
-    private JTextField textCelular;
+    private JTextField textCurso;
     private JLabel lblEmail;
     private JTextField textEmail;
     private JTextField textEndereco;
     private JButton btnCadastrar;
     private JCheckBox checkBoxAluno;
     private JCheckBox checkBoxProfessor;
+    private JTextField textField;
+
+    private TelaInicial telaInicial; // Referência à tela TelaInicial
 
     private static final String DB_URL = "jdbc:mysql://localhost:3306/bancosdedados";
     private static final String DB_USERNAME = "root";
-    private static final String DB_PASSWORD = "1204";
+    private static final String DB_PASSWORD = "5239";
 
     public static void main(String[] args) {
         EventQueue.invokeLater(() -> {
@@ -49,41 +52,45 @@ public class TelaCadastro {
         initialize();
     }
 
+    public void setTelaInicial(TelaInicial telaInicial) {
+        this.telaInicial = telaInicial;
+    }
+
     private void initialize() {
         frame = new JFrame();
         frame.getContentPane().setBackground(new Color(245, 245, 245));
-        frame.setBounds(100, 100, 450, 388);
+        frame.setBounds(100, 100, 496, 441);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         frame.getContentPane().setLayout(null);
 
         textNome = new JTextField();
-        textNome.setBounds(22, 75, 96, 19);
+        textNome.setBounds(26, 65, 96, 19);
         frame.getContentPane().add(textNome);
         textNome.setColumns(10);
 
         textCPF = new JTextField();
-        textCPF.setBounds(22, 119, 96, 19);
+        textCPF.setBounds(26, 109, 96, 19);
         frame.getContentPane().add(textCPF);
         textCPF.setColumns(10);
 
-        textCelular = new JTextField();
-        textCelular.setBounds(22, 249, 96, 19);
-        frame.getContentPane().add(textCelular);
-        textCelular.setColumns(10);
+        textCurso = new JTextField();
+        textCurso.setBounds(26, 277, 96, 19);
+        frame.getContentPane().add(textCurso);
+        textCurso.setColumns(10);
 
         JLabel lblNome = new JLabel("Nome");
         lblNome.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
-        lblNome.setBounds(22, 61, 45, 13);
+        lblNome.setBounds(26, 51, 45, 13);
         frame.getContentPane().add(lblNome);
 
         JLabel lblEndereco = new JLabel("Endereco");
         lblEndereco.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
-        lblEndereco.setBounds(22, 193, 96, 13);
+        lblEndereco.setBounds(26, 183, 96, 13);
         frame.getContentPane().add(lblEndereco);
 
         JLabel lblCPF = new JLabel("CPF");
         lblCPF.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
-        lblCPF.setBounds(22, 105, 45, 13);
+        lblCPF.setBounds(26, 95, 45, 13);
         frame.getContentPane().add(lblCPF);
 
         JLabel lblCadastro = new JLabel("Cadastro");
@@ -93,35 +100,59 @@ public class TelaCadastro {
 
         lblEmail = new JLabel("E-mail");
         lblEmail.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
-        lblEmail.setBounds(22, 149, 63, 13);
+        lblEmail.setBounds(26, 139, 63, 13);
         frame.getContentPane().add(lblEmail);
 
         textEmail = new JTextField();
         textEmail.setColumns(10);
-        textEmail.setBounds(22, 163, 96, 19);
+        textEmail.setBounds(26, 153, 96, 19);
         frame.getContentPane().add(textEmail);
 
-        JLabel lblCelular = new JLabel("Celular");
+        JLabel lblCelular = new JLabel("Curso");
         lblCelular.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
-        lblCelular.setBounds(22, 236, 96, 13);
+        lblCelular.setBounds(26, 262, 96, 13);
         frame.getContentPane().add(lblCelular);
 
         textEndereco = new JTextField();
         textEndereco.setColumns(10);
-        textEndereco.setBounds(22, 207, 96, 19);
+        textEndereco.setBounds(26, 197, 96, 19);
         frame.getContentPane().add(textEndereco);
 
         checkBoxAluno = new JCheckBox("Aluno");
-        checkBoxAluno.setBounds(22, 285, 97, 23);
+        checkBoxAluno.setBounds(26, 315, 97, 23);
         frame.getContentPane().add(checkBoxAluno);
 
         checkBoxProfessor = new JCheckBox("Professor");
-        checkBoxProfessor.setBounds(22, 311, 97, 23);
+        checkBoxProfessor.setBounds(26, 341, 97, 23);
         frame.getContentPane().add(checkBoxProfessor);
 
         btnCadastrar = new JButton("Cadastrar");
-        btnCadastrar.setBounds(177, 317, 96, 23);
+        btnCadastrar.setBounds(194, 368, 96, 23);
         frame.getContentPane().add(btnCadastrar);
+
+        JButton btnVoltar = new JButton("Voltar");
+        btnVoltar.setBounds(26, 11, 96, 23);
+        frame.getContentPane().add(btnVoltar);
+        btnVoltar.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                // Ação a ser executada quando o botão "Voltar" for clicado
+                if (telaInicial != null) {
+                    telaInicial.getFrame().setVisible(true);
+                }
+                frame.dispose();
+            }
+        });
+
+        JLabel lblCelular_1 = new JLabel("Celular");
+        lblCelular_1.setFont(new Font("Segoe UI Black", Font.PLAIN, 15));
+        lblCelular_1.setBounds(26, 227, 96, 13);
+        frame.getContentPane().add(lblCelular_1);
+
+        textField = new JTextField();
+        textField.setColumns(10);
+        textField.setBounds(26, 241, 96, 19);
+        frame.getContentPane().add(textField);
+
         btnCadastrar.addActionListener(e -> cadastrar());
 
         frame.setVisible(true);
@@ -130,84 +161,36 @@ public class TelaCadastro {
     private void cadastrar() {
         String nome = textNome.getText();
         String cpf = textCPF.getText();
-        String celular = textCelular.getText();
         String email = textEmail.getText();
         String endereco = textEndereco.getText();
+        String curso = textCurso.getText();
+        String celular = textField.getText();
+        boolean isAluno = checkBoxAluno.isSelected();
+        boolean isProfessor = checkBoxProfessor.isSelected();
 
-        if (nome.isEmpty() || cpf.isEmpty() || celular.isEmpty() || email.isEmpty() || endereco.isEmpty()) {
-            JOptionPane.showMessageDialog(frame, "Preencha todos os campos obrigatórios");
+        // Validar os campos necessários antes de prosseguir com o cadastro
+        if (nome.isEmpty() || cpf.isEmpty() || email.isEmpty() || endereco.isEmpty()) {
+            JOptionPane.showMessageDialog(frame, "Preencha todos os campos obrigatórios!");
             return;
         }
 
-        if (!checkBoxAluno.isSelected() && !checkBoxProfessor.isSelected()) {
-            JOptionPane.showMessageDialog(frame, "Selecione ao menos um tipo: Aluno ou Professor");
-            return;
+        // Realizar o cadastro no banco de dados ou executar outras ações relacionadas ao cadastro
+        try {
+            Connection conn = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD);
+            String query = "INSERT INTO tabela_usuarios (nome, cpf, email, endereco, curso, celular, aluno, professor) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+            PreparedStatement statement = conn.prepareStatement(query);
+            statement.setString(1, nome);
+            statement.setString(2, cpf);
+            statement.setString(3, email);
+            statement.setString(4, endereco);
+            statement.setString(5, curso);
+            statement.setString(6, celular);
+            statement.setBoolean(7, isAluno);
+            statement.setBoolean(8, isProfessor);
+            statement.executeUpdate();
+            JOptionPane.showMessageDialog(frame, "Cadastro realizado com sucesso!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(frame, "Erro ao cadastrar: " + e.getMessage());
         }
-
-        if (checkBoxAluno.isSelected() && checkBoxProfessor.isSelected()) {
-            JOptionPane.showMessageDialog(frame, "Selecione apenas um tipo: Aluno ou Professor");
-            return;
-        }
-
-        try (Connection connection = DriverManager.getConnection(DB_URL, DB_USERNAME, DB_PASSWORD)) {
-            connection.setAutoCommit(false);
-
-            String insertPessoaQuery = "INSERT INTO pessoa (nome, cpf, endereco, email, celular) VALUES (?, ?, ?, ?, ?)";
-            PreparedStatement insertPessoaStmt = connection.prepareStatement(insertPessoaQuery, PreparedStatement.RETURN_GENERATED_KEYS);
-            insertPessoaStmt.setString(1, nome);
-            insertPessoaStmt.setString(2, cpf);
-            insertPessoaStmt.setString(3, endereco);
-            insertPessoaStmt.setString(4, email);
-            insertPessoaStmt.setString(5, celular);
-            insertPessoaStmt.executeUpdate();
-
-            int pessoaId = 0; // Inicializa com 0
-            try (ResultSet generatedKeys = insertPessoaStmt.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    pessoaId = generatedKeys.getInt(1);
-                }
-            }
-
-            if (checkBoxAluno.isSelected()) {
-                String insertAlunoQuery = "INSERT INTO aluno (matricula, pessoa_id) VALUES (?, ?)";
-                PreparedStatement insertAlunoStmt = connection.prepareStatement(insertAlunoQuery);
-                int matricula = generateMatricula();
-                insertAlunoStmt.setString(1, Integer.toString(matricula));
-                insertAlunoStmt.setInt(2, pessoaId);
-                insertAlunoStmt.executeUpdate();
-                JOptionPane.showMessageDialog(frame, "Cadastro de Aluno realizado com sucesso! Matrícula: " + matricula);
-            } else if (checkBoxProfessor.isSelected()) {
-                String insertProfessorQuery = "INSERT INTO professor (codigo, pessoa_id) VALUES (?, ?)";
-                PreparedStatement insertProfessorStmt = connection.prepareStatement(insertProfessorQuery);
-                String codigoFuncionario = generateCodigoFuncionario();
-                insertProfessorStmt.setString(1, codigoFuncionario);
-                insertProfessorStmt.setInt(2, pessoaId);
-                insertProfessorStmt.executeUpdate();
-                JOptionPane.showMessageDialog(frame, "Cadastro de Professor realizado com sucesso! Código: " + codigoFuncionario);
-            }
-
-            connection.commit();
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-            JOptionPane.showMessageDialog(frame, "Erro ao cadastrar: " + ex.getMessage());
-        }
-    }
-
-    private int generateMatricula() {
-        Random random = new Random();
-        int min = 100000;
-        int max = 999999;
-        return random.nextInt((max - min) + 1) + min;
-    }
-
-    private String generateCodigoFuncionario() {
-        LocalDate currentDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyyMMdd");
-        String formattedDate = currentDate.format(formatter);
-
-        Random random = new Random();
-        int randomNum = random.nextInt((999 - 100) + 1) + 100;
-
-        return formattedDate + randomNum;
     }
 }

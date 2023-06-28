@@ -10,7 +10,7 @@ public class conexaoBC {
 
 	        String url = "jdbc:mysql://localhost:3306/bancosdedados";
 	        String username = "root";
-	        String password = "1204";
+	        String password = "5239";
 
 	        String sql = comando;
 
